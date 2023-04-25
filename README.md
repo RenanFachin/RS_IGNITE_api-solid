@@ -33,3 +33,9 @@ Requisitos que não partem do cliente, são requisitos mais técnicos. ex: Qual 
 - [ ] Os dados da aplicação precisam estar persistido em um banco PostgreSQL;
 - [ ] Todas listas de dados precisam estar paginadas com 20 itens por página;
 - [ ] O usuário deve ser identificado por um JWT (JSON Web Token);
+
+## Instalação
+```sh
+# Subindo o banco de dados com docker
+docker compose up -d
+```
