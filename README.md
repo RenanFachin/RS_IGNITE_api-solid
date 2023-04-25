@@ -1,6 +1,14 @@
 # APP - GymPass style app
 
-API para usuário fazer check-in em academias. 
+API para usuário fazer check-in em academias. Conceitos presentes no projeto `SOLID`, `DESIGN PATTERNS`, `DOCKER`, `JWT`, `REFRESH TOKEN`, `RBAC`
+
+Linguagem: `TYPESCRIPT`
+
+Banco de dados utilizado: `POSTGRESQL`
+
+ORM: `PRISMA`
+
+Aplicação com docker para gerar o banco de dados
 
 ## Requisitos funcionais
 O que é possível que o usuário faça na aplicação.
@@ -34,7 +42,28 @@ Requisitos que não partem do cliente, são requisitos mais técnicos. ex: Qual 
 - [ ] Todas listas de dados precisam estar paginadas com 20 itens por página;
 - [ ] O usuário deve ser identificado por um JWT (JSON Web Token);
 
+## Diagrama ERD
+<div align="center">
+    <img width="20%" alt="Diagrama ERD" src="./prisma/ERD.svg">
+</div>
+
 ## Instalação
+```sh
+# Faça o clone do repotório
+  git clone git@github.com:RenanFachin/RS_IGNITE_api-solid.git
+
+# Instalar as dependências do projeto
+  npm install
+
+# Rodar as migrations do projeto para criar o banco de dados
+  npx prisma migrate dev
+
+# Executando o projeto no ambiente de desenvolvimento
+  npm run dev
+```
+
+
+## Instalação do banco de dados
 ```sh
 # Subindo o banco de dados com docker
 docker compose up -d
