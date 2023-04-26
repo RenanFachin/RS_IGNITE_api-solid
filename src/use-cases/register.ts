@@ -1,4 +1,5 @@
 import { prisma } from '@/lib/prisma'
+import { UsersRepository } from '@/repositories/users-repository'
 import { hash } from 'bcryptjs'
 
 // Tipando o que vai vir
@@ -10,7 +11,7 @@ interface RegisterUseCaseRequest {
 
 export class RegisterUseCase {
   // Inversão de dependencia -> Recebendo o repository como parâmetro
-  constructor(private usersRepository: any) {}
+  constructor(private usersRepository: UsersRepository) {}
 
   async execute({ name, email, password }: RegisterUseCaseRequest) {
     // Hash da senha do usuário
