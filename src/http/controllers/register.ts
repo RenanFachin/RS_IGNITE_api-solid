@@ -35,7 +35,8 @@ export async function register(
       return response.status(409).send({ message: err.message })
     }
 
-    return response.status(500).send()
+    // Jogando o erro para 1 camada acima
+    throw err
   }
 
   return response.status(201).send()
