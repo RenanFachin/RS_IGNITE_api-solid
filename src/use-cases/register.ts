@@ -1,5 +1,6 @@
 import { UsersRepository } from '@/repositories/users-repository'
 import { hash } from 'bcryptjs'
+import { UserAlreadyExistsError } from './errors/user-already-exists-error'
 
 // Tipando o que vai vir
 interface RegisterUseCaseRequest {
@@ -21,7 +22,7 @@ export class RegisterUseCase {
 
     if (userWithSameEmail) {
       // throw new error ao invés de response, que é do HTTP
-      throw new Error('E-mail already exists.')
+      throw new UserAlreadyExistsError()
     }
 
     // Para trabalhar com o método da classe é necessário instanciar
