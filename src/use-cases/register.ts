@@ -1,4 +1,3 @@
-import { prisma } from '@/lib/prisma'
 import { UsersRepository } from '@/repositories/users-repository'
 import { hash } from 'bcryptjs'
 
@@ -17,13 +16,8 @@ export class RegisterUseCase {
     // Hash da senha do usuário
     const password_hash = await hash(password, 6)
 
-    // Verificando se o email já está em uso
-    // findUnique só busca dados com @unique ou são primários
-    const userWithSameEmail = await prisma.user.findUnique({
-      where: {
-        email,
-      },
-    })
+    // Chamando o repository
+    const userWithSameEmail = await this.usersRepository.findByEmail(email)
 
     if (userWithSameEmail) {
       // throw new error ao invés de response, que é do HTTP

@@ -4,6 +4,18 @@ import { UsersRepository } from '../users-repository'
 
 // é necessário passar o implements da interface
 export class PrismaUsersRepository implements UsersRepository {
+  async findByEmail(email: string) {
+    // Verificando se o email já está em uso
+    // findUnique só busca dados com @unique ou são primários
+    const user = await prisma.user.findUnique({
+      where: {
+        email,
+      },
+    })
+
+    return user
+  }
+
   async create(data: Prisma.UserCreateInput) {
     const user = await prisma.user.create({
       data,
