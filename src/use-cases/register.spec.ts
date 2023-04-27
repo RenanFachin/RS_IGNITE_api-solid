@@ -47,7 +47,8 @@ describe('Register Use Case', () => {
     // Tentando fazer o cadastro uma segunda vez -> DEVE FALHAR
     // resolve = dê certo
     // rejects = dê erro
-    expect(() =>
+    // o await é pq o método execute é uma promise
+    await expect(() =>
       registerUseCase.execute({
         name: 'John Doe',
         email,
