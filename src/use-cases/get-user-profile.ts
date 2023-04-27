@@ -17,8 +17,6 @@ export class GetUserProfileUseCase {
   async execute({
     userId,
   }: GetUserProfileUseRequest): Promise<GetUserProfileUseResponse> {
-    // auth -> Buscar usuário no db pelo email, comparar se a senha é igual a senha do param
-
     // Buscando o usuário pelo seu id, utilizando o método já existente
     const user = await this.usersRepository.findById(userId)
 
