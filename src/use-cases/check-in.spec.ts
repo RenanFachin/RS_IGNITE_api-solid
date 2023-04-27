@@ -1,8 +1,11 @@
 import { describe, it, beforeEach, afterEach, expect, vi } from 'vitest'
 import { InMemoryCheckInsRepository } from '@/repositories/in-memory/in-memory-check-ins-repository'
 import { CheckInUseCase } from './check-in'
+import { InMemoryGymsRepository } from '@/repositories/in-memory/in-memory-gyms-repository'
+import { Decimal } from '@prisma/client/runtime/library'
 
 let checkInsRepository: InMemoryCheckInsRepository
+let gymsRepository: InMemoryGymsRepository
 let sut: CheckInUseCase
 
 describe('Get User Profile Use Case', () => {
@@ -12,8 +15,19 @@ describe('Get User Profile Use Case', () => {
     // Instanciando o banco de dados in memory criado para os testes
     checkInsRepository = new InMemoryCheckInsRepository()
 
+    gymsRepository = new InMemoryGymsRepository()
+
     // Instanciando o caso de uso
-    sut = new CheckInUseCase(checkInsRepository)
+    sut = new CheckInUseCase(checkInsRepository, gymsRepository)
+
+    gymsRepository.items.push({
+      id: 'gym-01',
+      title: 'Javascript Gym',
+      description: '',
+      phone: '',
+      latitude: new Decimal(0),
+      longitude: new Decimal(0),
+    })
 
     // MOCKING das datas
     vi.useFakeTimers()
@@ -30,9 +44,9 @@ describe('Get User Profile Use Case', () => {
     const { checkIn } = await sut.execute({
       gymId: 'gym-01',
       userId: 'userId-01',
+      userLatitude: 0,
+      userLongitude: 0,
     })
-
-    console.log(checkIn.created_at)
 
     expect(checkIn.id).toEqual(expect.any(String))
   })
@@ -66,6 +80,8 @@ describe('Get User Profile Use Case', () => {
     await sut.execute({
       gymId: 'gym-01',
       userId: 'userId-01',
+      userLatitude: 0,
+      userLongitude: 0,
     })
 
     // Criando um check no dia 21
@@ -74,6 +90,8 @@ describe('Get User Profile Use Case', () => {
     const { checkIn } = await sut.execute({
       gymId: 'gym-01',
       userId: 'userId-01',
+      userLatitude: 0,
+      userLongitude: 0,
     })
 
     expect(checkIn.id).toEqual(expect.any(String))
