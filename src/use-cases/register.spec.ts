@@ -1,26 +1,16 @@
 import { expect, describe, it } from 'vitest'
 import { RegisterUseCase } from './register'
 import { compare } from 'bcryptjs'
+import { InMemoryUsersRepository } from '@/repositories/in-memory/in-memory-users-repository'
+import { UserAlreadyExistsError } from './errors/user-already-exists-error'
 
 describe('Register Use Case', () => {
   it('should hash user password upon registration', async () => {
-    // Instanciando o caso de uso
-    const registerUseCase = new RegisterUseCase({
-      // Criando os métodos de maneira fictícia
-      async findByEmail(email) {
-        return null
-      },
+    // Instanciando o banco de dados in memory criado para os testes
+    const usersRepository = new InMemoryUsersRepository()
 
-      async create(data) {
-        return {
-          id: 'user-1',
-          name: data.name,
-          email: data.email,
-          password_hash: data.password_hash,
-          created_at: new Date(),
-        }
-      },
-    })
+    // Instanciando o caso de uso
+    const registerUseCase = new RegisterUseCase(usersRepository)
 
     const { user } = await registerUseCase.execute({
       name: 'John Doe',
@@ -36,5 +26,50 @@ describe('Register Use Case', () => {
     )
 
     expect(isPasswordCorrectlyHashed).toBe(true)
+  })
+
+  it('should not be able to create register with same email twice', async () => {
+    // Instanciando o banco de dados in memory criado para os testes
+    const usersRepository = new InMemoryUsersRepository()
+
+    // Instanciando o caso de uso
+    const registerUseCase = new RegisterUseCase(usersRepository)
+
+    const email = 'johndoe@example.com'
+
+    // Cadastrando uma primeira vez
+    await registerUseCase.execute({
+      name: 'John Doe',
+      email,
+      password: '123456',
+    })
+
+    // Tentando fazer o cadastro uma segunda vez -> DEVE FALHAR
+    // resolve = dê certo
+    // rejects = dê erro
+    expect(() =>
+      registerUseCase.execute({
+        name: 'John Doe',
+        email,
+        password: '123456',
+      }),
+    ).rejects.toBeInstanceOf(UserAlreadyExistsError)
+  })
+
+  it('should be able to register', async () => {
+    // Instanciando o banco de dados in memory criado para os testes
+    const usersRepository = new InMemoryUsersRepository()
+
+    // Instanciando o caso de uso
+    const registerUseCase = new RegisterUseCase(usersRepository)
+
+    const { user } = await registerUseCase.execute({
+      name: 'John Doe',
+      email: 'johndoe@example.com',
+      password: '123456',
+    })
+
+    // Espero que o user criado tenha um id criado e que seja igual a qualquer string
+    expect(user.id).toEqual(expect.any(String))
   })
 })
