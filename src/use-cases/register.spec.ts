@@ -1,18 +1,26 @@
-import { expect, describe, it } from 'vitest'
+import { expect, describe, it, beforeEach } from 'vitest'
 import { RegisterUseCase } from './register'
 import { compare } from 'bcryptjs'
 import { InMemoryUsersRepository } from '@/repositories/in-memory/in-memory-users-repository'
 import { UserAlreadyExistsError } from './errors/user-already-exists-error'
 
+// Precisa criar as variaveis globalmente e tipar
+let usersRepository: InMemoryUsersRepository
+let sut: RegisterUseCase
+
 describe('Register Use Case', () => {
-  it('should hash user password upon registration', async () => {
+  beforeEach(() => {
+    // Aqui é onde iremos dar o valor as variáveis criadas
+
     // Instanciando o banco de dados in memory criado para os testes
-    const usersRepository = new InMemoryUsersRepository()
+    usersRepository = new InMemoryUsersRepository()
 
     // Instanciando o caso de uso
-    const registerUseCase = new RegisterUseCase(usersRepository)
+    sut = new RegisterUseCase(usersRepository)
+  })
 
-    const { user } = await registerUseCase.execute({
+  it('should hash user password upon registration', async () => {
+    const { user } = await sut.execute({
       name: 'John Doe',
       email: 'johndoe@example.com',
       password: '123456',
@@ -29,16 +37,10 @@ describe('Register Use Case', () => {
   })
 
   it('should not be able to create register with same email twice', async () => {
-    // Instanciando o banco de dados in memory criado para os testes
-    const usersRepository = new InMemoryUsersRepository()
-
-    // Instanciando o caso de uso
-    const registerUseCase = new RegisterUseCase(usersRepository)
-
     const email = 'johndoe@example.com'
 
     // Cadastrando uma primeira vez
-    await registerUseCase.execute({
+    await sut.execute({
       name: 'John Doe',
       email,
       password: '123456',
@@ -49,7 +51,7 @@ describe('Register Use Case', () => {
     // rejects = dê erro
     // o await é pq o método execute é uma promise
     await expect(() =>
-      registerUseCase.execute({
+      sut.execute({
         name: 'John Doe',
         email,
         password: '123456',
@@ -58,13 +60,7 @@ describe('Register Use Case', () => {
   })
 
   it('should be able to register', async () => {
-    // Instanciando o banco de dados in memory criado para os testes
-    const usersRepository = new InMemoryUsersRepository()
-
-    // Instanciando o caso de uso
-    const registerUseCase = new RegisterUseCase(usersRepository)
-
-    const { user } = await registerUseCase.execute({
+    const { user } = await sut.execute({
       name: 'John Doe',
       email: 'johndoe@example.com',
       password: '123456',
