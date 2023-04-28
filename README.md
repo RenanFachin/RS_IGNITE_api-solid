@@ -8,6 +8,8 @@ Banco de dados utilizado: `POSTGRESQL`
 
 ORM: `PRISMA`
 
+Testes: `VITEST`
+
 Aplicação com docker para gerar o banco de dados
 
 ## Requisitos funcionais
@@ -21,7 +23,7 @@ O que é possível que o usuário faça na aplicação.
 - [x] Deve ser possível o usuário buscar academias próximas;
 - [x] Deve ser possível o usuário buscar academias pelo nome;
 - [x] Deve ser possível o usuário realizar check-in em uma academia; 
-- [ ] Deve ser possível validar o check-in de um usuário;
+- [x] Deve ser possível validar o check-in de um usuário;
 - [x] Deve ser possível cadastrar uma academia;
 
 ## Regras de negócio
