@@ -22,7 +22,7 @@ O que é possível que o usuário faça na aplicação.
 - [ ] Deve ser possível o usuário buscar academias pelo nome;
 - [x] Deve ser possível o usuário realizar check-in em uma academia; 
 - [ ] Deve ser possível validar o check-in de um usuário;
-- [ ] Deve ser possível cadastrar uma academia;
+- [x] Deve ser possível cadastrar uma academia;
 
 ## Regras de negócio
 Determina condições que serão aplicadas para cada requisito funcional.SEMPRE é associada à um requisito funcional
