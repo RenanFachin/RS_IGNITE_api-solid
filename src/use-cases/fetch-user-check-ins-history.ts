@@ -16,7 +16,7 @@ export class FetchUserCheckInsHistoryUseCase {
 
   async execute({
     userId,
-    page
+    page,
   }: FetchUserCheckInsHistoryUseCaseRequest): Promise<FetchUserCheckInsHistoryUseCaseResponse> {
     // Verificando se a academia existe
     const checkIns = await this.checkInsRepository.findManyByUserId(

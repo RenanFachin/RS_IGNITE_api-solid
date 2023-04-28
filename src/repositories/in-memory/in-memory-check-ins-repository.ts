@@ -7,6 +7,10 @@ export class InMemoryCheckInsRepository implements CheckInsRepository {
   // Criando um array de usuários vazio para simular o db
   public items: checkIn[] = []
 
+  async countByUserId(userId: string) {
+    return this.items.filter((item) => item.user_id === userId).length
+  }
+
   async findManyByUserId(userId: string, page: number) {
     return this.items
       .filter((item) => item.user_id === userId)
