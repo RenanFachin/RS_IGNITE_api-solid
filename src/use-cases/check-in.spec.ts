@@ -62,6 +62,8 @@ describe('Get User Profile Use Case', () => {
     await sut.execute({
       gymId: 'gym-01',
       userId: 'userId-01',
+      userLatitude: 0,
+      userLongitude: 0,
     })
 
     // Tentar fazer um novo check in no mesmo dia
@@ -69,6 +71,8 @@ describe('Get User Profile Use Case', () => {
       sut.execute({
         gymId: 'gym-01',
         userId: 'userId-01',
+        userLatitude: 0,
+        userLongitude: 0,
       }),
     ).rejects.toBeInstanceOf(Error)
   })
@@ -95,5 +99,28 @@ describe('Get User Profile Use Case', () => {
     })
 
     expect(checkIn.id).toEqual(expect.any(String))
+  })
+
+  it('should not be able to check in on distant gym', async () => {
+    gymsRepository.items.push({
+      id: 'gym-02',
+      title: 'Javascript Gym',
+      description: '',
+      phone: '',
+      latitude: new Decimal(-23.569656),
+      longitude: new Decimal(-46.6477816),
+    })
+
+    // Definindo uma data e horário
+    vi.setSystemTime(new Date(2023, 0, 20, 8, 0, 0))
+
+    await expect(() =>
+      sut.execute({
+        gymId: 'gym-01',
+        userId: 'userId-01',
+        userLatitude: -23.5601143,
+        userLongitude: -46.6851156,
+      }),
+    ).rejects.toBeInstanceOf(Error)
   })
 })
