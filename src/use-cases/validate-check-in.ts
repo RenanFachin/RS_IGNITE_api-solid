@@ -1,10 +1,8 @@
 import { checkIn } from '@prisma/client'
 import { CheckInsRepository } from '@/repositories/check-ins-repository'
-import { GymsRepository } from '@/repositories/gyms-repository'
 import { ResourcerNotFoundError } from './errors/resource-not-found-error'
-import { getDistanceBetweenCoordinates } from '@/utils/get-distance-between-coordinates'
-import { MaxNumberOfCheckInsError } from './errors/max-number-of-check-ins-error'
-import { MaxDistanceError } from './errors/max-distance-error'
+import dayjs from 'dayjs'
+import { LateCheckInValidationError } from './errors/late-check-in-validation-error'
 
 // SEMPRE TEREMOS TIPAGEM DE "ENTRADA" E DE "SAÍDA"
 interface ValidateCheckInUseCaseRequest {
@@ -16,7 +14,7 @@ interface ValidateCheckInUseCaseResponse {
 }
 
 export class ValidateCheckInUseCase {
-  constructor(private checkInsRepository: CheckInsRepository) { }
+  constructor(private checkInsRepository: CheckInsRepository) {}
 
   async execute({
     checkInId,
@@ -26,6 +24,17 @@ export class ValidateCheckInUseCase {
 
     if (!checkIn) {
       throw new ResourcerNotFoundError()
+    }
+
+    // Verificando o tempo
+    // método diff retorna a diferença entre duas datas e o segundo parâmetro é a forma que queremos o calculo desta distância
+    const distanceInMinutesFromCheckInCreation = dayjs(new Date()).diff(
+      checkIn.created_at,
+      'minutes',
+    )
+
+    if (distanceInMinutesFromCheckInCreation > 20) {
+      throw new LateCheckInValidationError()
     }
 
     // Caso exista um checkin, atualizar o campo validated at com a data atual
