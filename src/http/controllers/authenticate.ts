@@ -20,9 +20,24 @@ export async function authenticate(
     const authenticateUseCase = makeAuthenticateUseCase()
 
     // Fazendo a chamada para o useCase de registro
-    await authenticateUseCase.execute({
+    // O caso de uso de autenticação devolve um usuário
+    const { user } = await authenticateUseCase.execute({
       email,
       password,
+    })
+
+    // Criando o token para este usuário
+    const token = await response.jwtSign(
+      {},
+      {
+        sign: {
+          sub: user.id,
+        },
+      },
+    )
+
+    return response.status(200).send({
+      token,
     })
   } catch (err) {
     if (err instanceof InvalidCredentialsError) {
@@ -33,6 +48,4 @@ export async function authenticate(
     // Jogando o erro para 1 camada acima
     throw err
   }
-
-  return response.status(200).send()
 }
