@@ -10,6 +10,8 @@ ORM: `PRISMA`
 
 Testes: `VITEST`
 
+CI: `Github actions`
+
 Aplicação com docker para gerar o banco de dados
 
 ## Requisitos funcionais
