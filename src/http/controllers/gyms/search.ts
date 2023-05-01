@@ -9,8 +9,8 @@ export async function search(request: FastifyRequest, response: FastifyReply) {
     page: z.coerce.number().min(1).default(1),
   })
 
-  // Validando o que está sendo enviado pelo body
-  const { query, page } = searchGymsQuerySchema.parse(request.body)
+  // Validando o que está sendo enviado pelo query
+  const { query, page } = searchGymsQuerySchema.parse(request.params)
 
   const searchGymsUseCase = makeSearchGymsUseCase()
 

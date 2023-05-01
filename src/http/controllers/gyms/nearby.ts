@@ -15,8 +15,8 @@ export async function nearby(request: FastifyRequest, response: FastifyReply) {
     }),
   })
 
-  // Validando o que está sendo enviado pelo body
-  const { latitude, longitude } = NearbyGymsQuerySchema.parse(request.body)
+  // Validando o que está sendo enviado pelo query
+  const { latitude, longitude } = NearbyGymsQuerySchema.parse(request.params)
 
   const fetchNearbyGymsUseCase = makeFetchNearbyGymsUseCase()
 
