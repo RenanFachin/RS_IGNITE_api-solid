@@ -1,26 +1,19 @@
-import { FastifyRequest, FastifyReply } from 'fastify'
+import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
 import { makeSearchGymsUseCase } from '@/use-cases/factories/make-search-gyms-use-case'
 
 export async function search(request: FastifyRequest, response: FastifyReply) {
-  // Criando o schema de validação
   const searchGymsQuerySchema = z.object({
-    query: z.string(),
+    q: z.string(),
     page: z.coerce.number().min(1).default(1),
   })
-
-  // Validando o que está sendo enviado pelo query
-  const { query, page } = searchGymsQuerySchema.parse(request.params)
-
+  const { q, page } = searchGymsQuerySchema.parse(request.query)
   const searchGymsUseCase = makeSearchGymsUseCase()
-
-  // Fazendo a chamada para o useCase de registro
   const { gyms } = await searchGymsUseCase.execute({
-    query,
+    query: q,
     page,
   })
-
-  return response.status(201).send({
+  return response.status(200).send({
     gyms,
   })
 }
