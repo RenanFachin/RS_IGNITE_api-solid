@@ -1,6 +1,6 @@
 # APP - GymPass style app
 
-API para usuário fazer check-in em academias. Conceitos presentes no projeto `SOLID`, `DESIGN PATTERNS`, `DOCKER`, `JWT`, `REFRESH TOKEN`, `RBAC`
+API para usuário fazer check-in em academias. Conceitos presentes no projeto `SOLID`, `DESIGN PATTERNS`, `DOCKER`, `JWT`, `REFRESH TOKEN`, `RBAC - Controle de autorizações`
 
 Linguagem: `TYPESCRIPT`
 
